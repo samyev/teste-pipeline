@@ -5,29 +5,15 @@ on:
     paths:
       - '**/*.go'  # Aciona o workflow apenas se arquivos .go forem alterados
 
+permissions:
+  contents: write  # Concede permissões de escrita ao GITHUB_TOKEN
+
 jobs:
   comment-pr:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Verificar se há arquivos Go no PR
-        id: check_go_files
-        run: |
-          # Obtém a lista de arquivos modificados no PR
-          files_changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-
-          # Verifica se algum arquivo modificado termina com .go
-          echo "$files_changed" | grep '\.go$' > /dev/null
-          if [ $? -eq 0 ]; then
-            echo "Arquivos Go encontrados no PR."
-            echo "::set-output name=has_go_files::true"
-          else
-            echo "Nenhum arquivo Go encontrado no PR."
-            echo "::set-output name=has_go_files::false"
-          fi
-
       - name: Adicionar comentário ao PR
-        if: steps.check_go_files.outputs.has_go_files == 'true'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
