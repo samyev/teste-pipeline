@@ -7,7 +7,8 @@ on:
   workflow_call:  # Permite que o workflow seja reutilizável
 
 permissions:
-  contents: write  # Concede permissões de escrita ao GITHUB_TOKEN
+  contents: write # Concede permissões de escrita ao GITHUB_TOKEN
+  pull-requests: write
 
 jobs:
   comment-pr:
