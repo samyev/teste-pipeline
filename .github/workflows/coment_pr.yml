@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '**/*.go'  # Aciona o workflow apenas se arquivos .go forem alterados
+  workflow_call:  # Permite que o workflow seja reutilizável
 
 permissions:
   contents: write  # Concede permissões de escrita ao GITHUB_TOKEN
