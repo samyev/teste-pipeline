@@ -11,25 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Convert and Set Private Key
-        id: set_private_key
+      - name: Preparar chave privada para conversão
         run: |
-          # Salva a chave privada em um arquivo temporário
+          # Salva a chave privada da variável de ambiente em um arquivo temporário
           echo "${{ secrets.GH_KARAVELA_TAGS_PRIVATE_KEY }}" > private_key.pem
       
           # Converte a chave privada para o formato PKCS#8
           openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in private_key.pem -out private_key_pkcs8.pem
       
           # Lê o conteúdo da chave privada convertida
-          PRIVATE_KEY=$(cat private_key_pkcs8.pem)
+          PRIVATE_KEY_CONVERTED=$(cat private_key_pkcs8.pem)
       
           # Define a chave privada convertida como uma variável de ambiente
           echo "PRIVATE_KEY_CONVERTED<<EOF" >> $GITHUB_ENV
-          echo "$PRIVATE_KEY" >> $GITHUB_ENV
+          echo "$PRIVATE_KEY_CONVERTED" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
       
           # Remove os arquivos temporários
           rm private_key.pem private_key_pkcs8.pem
+        shell: bash
                 
       - name: Gerar Token da GitHub App
         id: generate_token
